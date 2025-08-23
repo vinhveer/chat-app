@@ -9,7 +9,7 @@ export default function ChatPage() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col" style={{ height: '100dvh' }}>
       <ChatHeader 
         title="Chat App"
         subtitle={`Welcome back, ${user?.user_metadata?.displayName || user?.email?.split('@')[0] || 'User'}`}

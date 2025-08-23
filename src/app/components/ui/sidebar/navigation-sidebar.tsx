@@ -62,8 +62,8 @@ const NavigationSidebar = forwardRef<HTMLDivElement, NavigationSidebarProps>(
   }, []);
 
     return (
-      <Sidebar ref={ref} isCollapsed={isCollapsed} width={width} className={`h-screen ${className}`} {...props}>
-        <div className="flex flex-col h-full">
+      <Sidebar ref={ref} isCollapsed={isCollapsed} width={width} className={className} style={{ height: '100dvh' }} {...props}>
+        <div className="flex flex-col" style={{ height: '100dvh' }}>
           {/* User Account Header */}
           <div className="border-b border-gray-200 dark:border-gray-800">
             <UserAccount />

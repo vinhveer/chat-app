@@ -38,7 +38,7 @@ const NavigationSidebar = forwardRef<HTMLDivElement, NavigationSidebarProps>(
           `}
           {...props}
         >
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col" style={{ height: '100dvh' }}>
             <SidebarHeader />
             <SidebarContent rooms={rooms} loading={loading} onClose={onClose} />
           </div>

@@ -36,7 +36,7 @@ const OptionsSidebar = forwardRef<HTMLDivElement, OptionsSidebarProps>(
           `}
           {...props}
         >
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col" style={{ height: '100dvh' }}>
             <OptionsHeader onClose={onClose} />
             <OptionsContent roomId={roomId} onClose={onClose} />
           </div>

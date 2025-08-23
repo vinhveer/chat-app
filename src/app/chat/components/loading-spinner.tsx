@@ -11,7 +11,7 @@ export function LoadingSpinner({ message = "Loading...", size = 'md' }: LoadingS
   };
 
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center" style={{ height: '100dvh' }}>
       <div className="flex flex-col items-center space-y-4">
         <div className={`${sizeClasses[size]} border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin`}></div>
         <p className="text-gray-600 dark:text-gray-300">{message}</p>

@@ -51,7 +51,7 @@ export function Dialog({
       />
       
       {/* Dialog */}
-      <div className="flex min-h-full items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4" style={{ minHeight: '100dvh' }}>
         <div 
           className={`relative w-full ${sizeClasses[size]} bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700`}
           onClick={(e) => e.stopPropagation()}
