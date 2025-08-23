@@ -49,8 +49,14 @@ export class AuthService {
   }
 
   static async signOut(): Promise<{ error: AuthError | null }> {
-    const { error } = await supabase.auth.signOut();
-    return { error };
+    try {
+      const { error } = await supabase.auth.signOut();
+      return { error };
+    } catch (err) {
+      // Handle AuthSessionMissingError gracefully
+      console.warn('Auth session missing during signOut, continuing...');
+      return { error: null };
+    }
   }
 
   static async getCurrentUser(): Promise<User | null> {

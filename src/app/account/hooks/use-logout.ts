@@ -13,16 +13,17 @@ export function useLogout() {
     setStep('logging-out');
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       await signOut();
       setStep('success');
       
       setTimeout(() => {
-        router.push('/auth/login');
-      }, 2000);
+        router.push('/');
+      }, 1500);
     } catch (error) {
       console.error('Logout error:', error);
-      setStep('confirm');
+      // Even if logout fails, redirect to home
+      router.push('/');
     }
   };
 

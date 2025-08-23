@@ -36,7 +36,7 @@ export default function ChatLayout({ children }: ChatLayoutProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -57,7 +57,9 @@ export default function ChatLayout({ children }: ChatLayoutProps) {
       
       <main className="flex-1 flex flex-col overflow-hidden lg:ml-0">
         {isNavigating ? (
-          <LoadingSpinner message="Loading page..." />
+          <div className="flex-1 flex items-center justify-center">
+            <LoadingSpinner message="Loading page..." />
+          </div>
         ) : (
           children
         )}
