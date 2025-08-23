@@ -1,8 +1,7 @@
 'use client';
 
-import { ChatHeader } from '../components';
 import { useCreateRoom, useBackNavigation } from '../hooks';
-import { Member } from '@/data/controllers/member';
+import type { Member } from '@/data/controllers/member';
 
 
 export default function CreateRoomPage() {

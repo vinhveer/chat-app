@@ -68,7 +68,7 @@ export function DeleteRoomSection({ roomId, onClose }: DeleteRoomSectionProps) {
       // Redirect to chat home
       onClose?.();
       router.push('/chat');
-    } catch (error) {
+    } catch {
       setError('An error occurred while deleting room');
       setDeleting(false);
     }

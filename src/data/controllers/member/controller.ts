@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase';
 import { 
-  createSuccessResponse,
   createErrorResponse,
   ErrorType,
   searchUsers,
@@ -10,8 +9,7 @@ import {
   SearchMembersRequest,
   SearchMembersResponse,
   GetMemberByEmailRequest,
-  GetMemberByEmailResponse,
-  Member
+  GetMemberByEmailResponse
 } from './types';
 
 export class MemberController {

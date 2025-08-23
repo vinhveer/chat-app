@@ -45,14 +45,15 @@ export function useRoomMembers(roomId: string) {
         const { users } = await response.json();
         const membersList: Member[] = Object.entries(users).map(([userId, userData]) => ({
           id: userId,
-          email: (userData as any).email,
-          displayName: (userData as any).displayName
+          email: (userData as { email: string; displayName: string }).email,
+          displayName: (userData as { email: string; displayName: string }).displayName,
+          created_at: new Date().toISOString() // Fallback since API doesn't return created_at
         }));
         setMembers(membersList);
       } else {
         setError('Failed to load member details');
       }
-    } catch (error) {
+    } catch {
       setError('Error loading members');
     } finally {
       setLoading(false);
@@ -61,7 +62,7 @@ export function useRoomMembers(roomId: string) {
 
   useEffect(() => {
     loadMembers();
-  }, [roomId]);
+  }, [roomId, loadMembers]);
 
   return {
     members,
