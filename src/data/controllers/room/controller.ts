@@ -1,8 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { 
-  create, 
-  read, 
-  deleteRecord,
+  read,
   getCurrentUser,
   createUnauthorizedResponse,
   createErrorResponse,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { MemberRoomController } from '@/data/controllers/member_room';
 import { Member } from '@/data/controllers/member';
 import { OperationStatus } from '@/data/controllers/base/status';
@@ -10,7 +10,7 @@ export function useRoomMembers(roomId: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const loadMembers = async () => {
+  const loadMembers = useCallback(async () => {
     setLoading(true);
     setError('');
 
@@ -58,7 +58,7 @@ export function useRoomMembers(roomId: string) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [roomId]);
 
   useEffect(() => {
     loadMembers();

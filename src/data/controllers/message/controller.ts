@@ -207,7 +207,7 @@ export class MessageController {
                 displayName: `User${newMessage.user_id.slice(-4)}`
               };
             }
-          } catch (error) {
+          } catch {
             newMessage.user = {
               email: '',
               displayName: 'Unknown User'

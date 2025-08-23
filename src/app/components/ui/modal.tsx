@@ -1,7 +1,12 @@
 'use client';
 
 import { useEffect, ReactNode } from 'react';
-import { ModalTab } from '@/types';
+
+interface ModalTab {
+  id: string;
+  label: string;
+  icon?: ReactNode;
+}
 
 interface ModalProps {
   isOpen: boolean;

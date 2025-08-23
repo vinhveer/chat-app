@@ -1,7 +1,6 @@
 'use client';
 
 import { useCreateRoom, useBackNavigation } from '../hooks';
-import type { Member } from '@/data/controllers/member';
 
 
 export default function CreateRoomPage() {

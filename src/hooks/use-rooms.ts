@@ -94,9 +94,9 @@ export function useRooms() {
 
   // Expose refresh function globally
   useEffect(() => {
-    (window as Record<string, unknown>).refreshRooms = loadRooms;
+    (window as any).refreshRooms = loadRooms;
     return () => {
-      delete (window as Record<string, unknown>).refreshRooms;
+      delete (window as any).refreshRooms;
     };
   }, [loadRooms]);
 

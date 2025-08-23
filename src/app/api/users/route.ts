@@ -35,7 +35,6 @@ export async function POST(request: NextRequest) {
       usersResponse.data.users.forEach(user => {
         if (userIds.includes(user.id)) {
           const displayName = user.user_metadata?.displayName || 
-                            user.raw_user_meta_data?.displayName || 
                             user.email?.split('@')[0] || 'User';
           
           usersMap[user.id] = {
