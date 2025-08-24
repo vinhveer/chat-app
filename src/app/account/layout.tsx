@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { LoadingProvider, RoutePreloader } from "../components";
 
 interface AccountLayoutProps {
@@ -12,22 +11,6 @@ interface AccountLayoutProps {
 
 export default function AccountLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-
-  useEffect(() => {
-    const setViewportHeight = () => {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-
-    setViewportHeight();
-    window.addEventListener('resize', setViewportHeight);
-    window.addEventListener('orientationchange', setViewportHeight);
-
-    return () => {
-      window.removeEventListener('resize', setViewportHeight);
-      window.removeEventListener('orientationchange', setViewportHeight);
-    };
-  }, []);
 
   return (
     <RoutePreloader>

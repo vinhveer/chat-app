@@ -36,7 +36,7 @@ export default function ChatLayout({ children }: ChatLayoutProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen-stable flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -49,7 +49,7 @@ export default function ChatLayout({ children }: ChatLayoutProps) {
   const currentPath = pathname.replace('/chat', '') || '/';
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-screen-stable bg-gray-50 dark:bg-gray-900">
       <NavigationSidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}

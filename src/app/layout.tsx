@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/data/auth";
+import { ViewportHandler } from "../components/viewport-handler";
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -18,6 +19,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
       </head>
       <body className="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+        <ViewportHandler />
         <AuthProvider>
           {children}
         </AuthProvider>

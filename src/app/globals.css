@@ -30,3 +30,21 @@ html {
   min-height: 100dvh;
 }
 
+/* Global height classes */
+.h-screen-stable {
+  height: 100vh;
+  height: 100dvh;
+}
+
+@supports (height: 100dvh) {
+  .h-screen-stable {
+    height: 100dvh;
+  }
+}
+
+@supports not (height: 100dvh) {
+  .h-screen-stable {
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}
+
