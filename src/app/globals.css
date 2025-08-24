@@ -1,2 +1,32 @@
 @import "tailwindcss";
 
+/* Mobile viewport fix for stable layout */
+:root {
+  --vh: 1vh;
+}
+
+/* Prevent mobile browsers from adjusting text size */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Stable mobile layout */
+@supports (height: 100dvh) {
+  .min-h-screen-stable {
+    min-height: 100dvh;
+  }
+}
+
+@supports not (height: 100dvh) {
+  .min-h-screen-stable {
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+}
+
+/* Alternative for older browsers */
+.min-h-screen-stable {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+

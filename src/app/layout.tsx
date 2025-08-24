@@ -14,6 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+      </head>
       <body className="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <AuthProvider>
           {children}
