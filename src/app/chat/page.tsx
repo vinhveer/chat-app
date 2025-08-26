@@ -1,12 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useAuth } from '@/data/auth';
-import { useRouter } from 'next/navigation';
 import { ChatHeader } from './components';
 
 export default function ChatPage() {
   const { user } = useAuth();
-  const router = useRouter();
 
   return (
     <div className="flex flex-col" style={{ height: '100dvh' }}>
@@ -34,12 +33,13 @@ export default function ChatPage() {
           </div>
 
           <div className="space-y-3">
-            <button 
-              onClick={() => router.push('/chat/create')}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
+            <Link 
+              href="/create"
+              prefetch={true}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 block text-center"
             >
               Create New Chat Room
-            </button>
+            </Link>
           </div>
 
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700">

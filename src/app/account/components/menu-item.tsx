@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface MenuItemProps {
   title: string;
@@ -8,12 +8,10 @@ interface MenuItemProps {
 }
 
 export function MenuItem({ title, description, href, icon }: MenuItemProps) {
-  const router = useRouter();
-
   return (
-    <button
-      onClick={() => router.push(href)}
-      className="w-full p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group text-left rounded-md"
+    <Link
+      href={href}
+      className="w-full p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group text-left rounded-md block"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -38,6 +36,6 @@ export function MenuItem({ title, description, href, icon }: MenuItemProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </div>
-    </button>
+    </Link>
   );
 }

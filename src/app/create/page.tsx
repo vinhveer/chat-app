@@ -1,13 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useCreateRoom, useBackNavigation } from '../hooks';
-import { LoadingSpinner } from '../components';
+import { useCreateRoom, useBackNavigation } from '../chat/hooks';
 
 
 export default function CreateRoomPage() {
-  const [pageLoading, setPageLoading] = useState(true);
-  
   const {
     roomName,
     setRoomName,
@@ -24,18 +20,6 @@ export default function CreateRoomPage() {
   } = useCreateRoom();
   
   const { handleBackClick } = useBackNavigation();
-
-  // Simulate page loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPageLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (pageLoading) {
-    return <LoadingSpinner message="Loading create room..." />;
-  }
 
   return (
     <div className="flex flex-col" style={{ height: '100dvh' }}>

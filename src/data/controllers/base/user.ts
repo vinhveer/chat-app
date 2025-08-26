@@ -134,3 +134,69 @@ export async function getUserById(supabase: SupabaseClient, userId: string): Pro
     return createSuccessResponse(mockUser, 'User found successfully (fallback data)');
   }
 }
+
+export async function getUsersByIds(userIds: string[]): Promise<Record<string, { email: string; displayName: string }>> {
+  try {
+    const { supabaseAdmin } = await import('@/lib/supabase');
+    
+    if (!supabaseAdmin) {
+      // Fallback to mock data
+      const usersMap: Record<string, { email: string; displayName: string }> = {};
+      userIds.forEach(userId => {
+        usersMap[userId] = {
+          email: `user${userId.slice(-4)}@example.com`,
+          displayName: `user${userId.slice(-4)}`
+        };
+      });
+      return usersMap;
+    }
+
+    if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+      return {};
+    }
+
+    const usersResponse = await supabaseAdmin.auth.admin.listUsers();
+    
+    if (usersResponse.error) {
+      console.error('Failed to fetch users:', usersResponse.error);
+      // Fallback to mock data
+      const usersMap: Record<string, { email: string; displayName: string }> = {};
+      userIds.forEach(userId => {
+        usersMap[userId] = {
+          email: `user${userId.slice(-4)}@example.com`,
+          displayName: `user${userId.slice(-4)}`
+        };
+      });
+      return usersMap;
+    }
+
+    const usersMap: Record<string, { email: string; displayName: string }> = {};
+    
+    if (usersResponse.data?.users) {
+      usersResponse.data.users.forEach(user => {
+        if (userIds.includes(user.id)) {
+          const displayName = user.user_metadata?.displayName || 
+                            user.email?.split('@')[0] || 'User';
+          
+          usersMap[user.id] = {
+            email: user.email || '',
+            displayName: displayName
+          };
+        }
+      });
+    }
+
+    return usersMap;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    // Fallback to mock data
+    const usersMap: Record<string, { email: string; displayName: string }> = {};
+    userIds.forEach(userId => {
+      usersMap[userId] = {
+        email: `user${userId.slice(-4)}@example.com`,
+        displayName: `user${userId.slice(-4)}`
+      };
+    });
+    return usersMap;
+  }
+}

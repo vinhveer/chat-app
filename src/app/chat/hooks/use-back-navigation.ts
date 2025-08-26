@@ -1,16 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useSidebarToggle } from '@/hooks/use-sidebar-toggle';
 
 export function useBackNavigation() {
   const router = useRouter();
+  const { toggle: toggleSidebar } = useSidebarToggle();
 
   const handleBackClick = () => {
-    if ((window as any).toggleSidebar) {
-      (window as any).toggleSidebar();
-    } else {
-      router.back();
-    }
+    toggleSidebar();
   };
 
   return { handleBackClick };

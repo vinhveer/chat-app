@@ -2,6 +2,8 @@
 
 import { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useProgressivePrefetch } from '@/hooks/use-progressive-prefetch';
 
 interface SidebarItemProps extends HTMLAttributes<HTMLDivElement> {
   icon?: ReactNode;
@@ -15,6 +17,7 @@ interface SidebarItemProps extends HTMLAttributes<HTMLDivElement> {
 const SidebarItem = forwardRef<HTMLDivElement, SidebarItemProps>(
   ({ className = '', icon, href, isActive = false, subtitle, children, onClick, keepSidebarOpen = false, ...props }, ref) => {
     const router = useRouter();
+    const { prefetchOnHover } = useProgressivePrefetch();
 
     const baseClasses = 'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors cursor-pointer relative';
     const activeClasses = isActive 
@@ -22,19 +25,22 @@ const SidebarItem = forwardRef<HTMLDivElement, SidebarItemProps>(
       : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800';
     const classes = `${baseClasses} ${activeClasses} ${className}`;
 
-    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (href) {
-        router.push(href);
-      }
-      
+    const handleClick = (e: React.MouseEvent) => {
       // Only call onClick if sidebar should not be kept open
       if (!keepSidebarOpen) {
-        onClick?.(e);
+        onClick?.(e as React.MouseEvent<HTMLDivElement>);
       }
     };
 
-    return (
-      <div ref={ref} className={classes} onClick={handleClick} {...props}>
+    const handleMouseEnter = () => {
+      // Trigger Level 2 prefetching on hover
+      if (href) {
+        prefetchOnHover(href);
+      }
+    };
+
+    const content = (
+      <>
         {icon && (
           <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
             {icon}
@@ -50,6 +56,26 @@ const SidebarItem = forwardRef<HTMLDivElement, SidebarItemProps>(
             </p>
           )}
         </div>
+      </>
+    );
+
+    if (href) {
+      return (
+        <Link 
+          href={href} 
+          prefetch={false} 
+          className={classes} 
+          onClick={handleClick}
+          onMouseEnter={handleMouseEnter}
+        >
+          {content}
+        </Link>
+      );
+    }
+
+    return (
+      <div ref={ref} className={classes} onClick={handleClick} {...props}>
+        {content}
       </div>
     );
   }

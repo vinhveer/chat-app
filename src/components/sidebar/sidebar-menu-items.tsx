@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { SidebarItem } from './sidebar-item';
 import { SettingsIcon, PlusIcon, ChatIcon } from '@/app/components/ui/icons';
 import { ChatRoom } from '@/data/controllers/room';
+import { useProgressivePrefetch } from '@/hooks/use-progressive-prefetch';
 
 interface AccountSectionProps {
   onClose?: () => void;
@@ -25,7 +27,7 @@ interface CreateRoomItemProps {
 export function CreateRoomItem({ onClose }: CreateRoomItemProps) {
   return (
     <SidebarItem
-      href="/chat/create"
+      href="/create"
       onClick={onClose}
       icon={<PlusIcon />}
     >
@@ -40,6 +42,16 @@ interface RoomListProps {
 }
 
 export function RoomList({ rooms, onClose }: RoomListProps) {
+  const { prefetchRoomRoutes } = useProgressivePrefetch();
+
+  // Prefetch room routes when rooms are loaded
+  useEffect(() => {
+    if (rooms.length > 0) {
+      const roomIds = rooms.map(room => room.id);
+      prefetchRoomRoutes(roomIds);
+    }
+  }, [rooms, prefetchRoomRoutes]);
+
   if (rooms.length === 0) {
     return (
       <div className="px-3 py-2 text-xs text-gray-500 dark:text-gray-400">
@@ -53,7 +65,7 @@ export function RoomList({ rooms, onClose }: RoomListProps) {
       {rooms.map((room) => (
         <SidebarItem
           key={room.id}
-          href={`/chat/${room.id}`}
+          href={`/${room.id}`}
           onClick={onClose}
           icon={<ChatIcon />}
           subtitle="Message"

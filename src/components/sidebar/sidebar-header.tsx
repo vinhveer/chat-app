@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/data/auth';
 import { MemberController } from '@/data/controllers/member';
 import { RoomController } from '@/data/controllers/room';
@@ -69,7 +70,7 @@ export function SidebarHeader() {
             id: user.id,
             name: user.displayName || 'Unknown User',
             subtitle: user.email || '',
-            href: `/chat/direct/${user.id}` // Assuming direct message functionality
+            href: `/direct/${user.id}` // Assuming direct message functionality
           });
         });
       }
@@ -82,7 +83,7 @@ export function SidebarHeader() {
             id: room.id,
             name: room.name || 'Unnamed Room',
             subtitle: 'Chat Room',
-            href: `/chat/${room.id}`
+            href: `/${room.id}`
           });
         });
       }
@@ -102,8 +103,7 @@ export function SidebarHeader() {
     handleSearch(query);
   };
 
-  const handleResultClick = (result: SearchResult) => {
-    window.location.href = result.href;
+  const handleResultClick = () => {
     setSearchQuery('');
     setSearchResults([]);
     setShowResults(false);
@@ -153,9 +153,10 @@ export function SidebarHeader() {
         {showResults && searchResults.length > 0 && (
           <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-64 overflow-y-auto z-50">
             {searchResults.map((result) => (
-              <button
+              <Link
                 key={`${result.type}-${result.id}`}
-                onClick={() => handleResultClick(result)}
+                href={result.href}
+                onClick={handleResultClick}
                 className="w-full flex items-center space-x-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left first:rounded-t-lg last:rounded-b-lg"
               >
                 <div className="flex-shrink-0">
@@ -184,7 +185,7 @@ export function SidebarHeader() {
                     {result.type}
                   </span>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         )}

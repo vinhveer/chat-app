@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/data/auth';
 
-interface ChatLayoutProps {
+interface CreateLayoutProps {
   children: React.ReactNode;
 }
 
-export default function ChatLayout({ children }: ChatLayoutProps) {
+export default function CreateLayout({ children }: CreateLayoutProps) {
   const { user, loading } = useAuth();
   const router = useRouter();
 

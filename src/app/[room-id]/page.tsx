@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { ChatHeader, LoadingSpinner, MessageList, MessageInput, OptionsSidebar } from '../components';
-import { useChatRoom } from '../hooks';
+import { ChatHeader, MessageList, MessageInput, OptionsSidebar } from '../chat/components';
+import { useChatRoom } from '../chat/hooks';
 
 export default function ChatRoomPage() {
   const params = useParams();
-  const roomId = params.room_id as string;
+  const roomId = params['room-id'] as string;
   const [optionsSidebarOpen, setOptionsSidebarOpen] = useState(false);
   
   const {
@@ -25,7 +25,7 @@ export default function ChatRoomPage() {
   } = useChatRoom(roomId);
 
   if (loading) {
-    return <LoadingSpinner message="Loading chat..." />;
+    return null; // Let global loading handle this
   }
 
   return (

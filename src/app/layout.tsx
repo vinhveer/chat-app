@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/data/auth";
 import { ViewportHandler } from "../components/viewport-handler";
+import { LayoutWrapper } from "../components/layout-wrapper";
+import { PrefetchProvider } from "../components/providers/prefetch-provider";
 
 export const metadata: Metadata = {
   title: "Chat",
@@ -21,7 +23,11 @@ export default function RootLayout({
       <body className="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <ViewportHandler />
         <AuthProvider>
-          {children}
+          <PrefetchProvider>
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
+          </PrefetchProvider>
         </AuthProvider>
       </body>
     </html>

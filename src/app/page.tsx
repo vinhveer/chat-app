@@ -45,6 +45,7 @@ export default function Home() {
           <div>
             <Link
               href="/auth/login"
+              prefetch={true}
               className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-4 px-8 rounded-lg transition-colors duration-200 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Sign In

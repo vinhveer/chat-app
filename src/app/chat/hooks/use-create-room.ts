@@ -71,7 +71,7 @@ export function useCreateRoom() {
       // Redirect to the created room
       const roomId = response.data?.id;
       if (roomId) {
-        router.push(`/chat/${roomId}`);
+        router.push(`/${roomId}`);
       } else {
         router.push('/chat');
       }

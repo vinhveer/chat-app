@@ -39,31 +39,19 @@ export class MessageController {
         return createErrorResponse(ErrorType.QUERY_FAILED, messagesResponse.message || 'Failed to get messages');
       }
 
-      // Get user info for messages via API route
+      // Get user information for messages
       const userIds = [...new Set((messagesResponse.data || []).map(m => m.user_id))];
       const usersMap = new Map();
       
       if (userIds.length > 0) {
         try {
-          const response = await fetch('/api/users', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userIds }),
+          const { getUsersByIds } = await import('@/data/controllers/base/user');
+          const users = await getUsersByIds(userIds);
+          Object.entries(users).forEach(([userId, userData]) => {
+            usersMap.set(userId, userData);
           });
-          
-          if (response.ok) {
-            const { users } = await response.json();
-            Object.entries(users).forEach(([userId, userData]) => {
-              usersMap.set(userId, userData as { email: string; displayName: string });
-            });
-
-          } else {
-            console.error('Failed to fetch users from API:', response.status);
-          }
         } catch (error) {
-          console.error('Error calling users API:', error);
+          console.error('Error getting users:', error);
         }
       }
 
@@ -190,23 +178,14 @@ export class MessageController {
           
           // Get user info for the new message
           try {
-            if (supabaseAdmin) {
-              const usersResponse = await supabaseAdmin.auth.admin.listUsers();
-              const user = usersResponse.data?.users?.find(u => u.id === newMessage.user_id);
-              
-              const displayName = user?.user_metadata?.displayName || 
-                                user?.email?.split('@')[0] || 'Unknown User';
-              
-              newMessage.user = {
-                email: user?.email || '',
-                displayName: displayName
-              };
-            } else {
-              newMessage.user = {
-                email: '',
-                displayName: `User${newMessage.user_id.slice(-4)}`
-              };
-            }
+            const { getUsersByIds } = await import('@/data/controllers/base/user');
+            const users = await getUsersByIds([newMessage.user_id]);
+            const userInfo = users[newMessage.user_id];
+            
+            newMessage.user = userInfo || {
+              email: '',
+              displayName: 'Unknown User'
+            };
           } catch {
             newMessage.user = {
               email: '',
