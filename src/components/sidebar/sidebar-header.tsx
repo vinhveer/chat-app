@@ -7,6 +7,7 @@ import { MemberController } from '@/data/controllers/member';
 import { RoomController } from '@/data/controllers/room';
 import { OperationStatus } from '@/data/controllers/base/status';
 import { SearchSkeleton } from './skeleton-loading';
+import { getUserDisplayName, getUserInitials } from '@/utils/user-display';
 
 interface SearchResult {
   type: 'user' | 'room';
@@ -26,9 +27,9 @@ export function SidebarHeader() {
 
   // Format user info
   const userInfo = {
-    displayName: user?.user_metadata?.displayName || user?.email?.split('@')[0] || 'User',
+    displayName: getUserDisplayName(user),
     email: user?.email || '',
-    initials: (user?.user_metadata?.displayName || user?.email)?.charAt(0).toUpperCase() || 'U'
+    initials: getUserInitials(user)
   };
 
   // Handle click outside to close search results

@@ -5,12 +5,12 @@ import { SidebarHeader } from './sidebar-header';
 import { SidebarContent } from './sidebar-content';
 import { useRooms } from '@/hooks/use-rooms';
 
-interface NavigationSidebarProps extends HTMLAttributes<HTMLDivElement> {
+interface NavigationSidebarModularProps extends HTMLAttributes<HTMLDivElement> {
   isOpen?: boolean;
   onClose?: () => void;
 }
 
-const NavigationSidebar = forwardRef<HTMLDivElement, NavigationSidebarProps>(
+const NavigationSidebarModular = forwardRef<HTMLDivElement, NavigationSidebarModularProps>(
   ({ className = '', isOpen = true, onClose, ...props }, ref) => {
     const { rooms, loading } = useRooms();
 
@@ -48,6 +48,6 @@ const NavigationSidebar = forwardRef<HTMLDivElement, NavigationSidebarProps>(
   }
 );
 
-NavigationSidebar.displayName = 'NavigationSidebar';
+NavigationSidebarModular.displayName = 'NavigationSidebarModular';
 
-export { NavigationSidebar };
+export { NavigationSidebarModular };

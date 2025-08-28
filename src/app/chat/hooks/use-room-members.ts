@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { MemberRoomController } from '@/data/controllers/member_room';
 import { Member } from '@/data/controllers/member';
 import { OperationStatus } from '@/data/controllers/base/status';
+import { getUsersByIds } from '@/data/controllers/base/user';
 
 export function useRoomMembers(roomId: string) {
   const [members, setMembers] = useState<Member[]>([]);
@@ -11,6 +12,12 @@ export function useRoomMembers(roomId: string) {
   const [error, setError] = useState('');
 
   const loadMembers = useCallback(async () => {
+    if (!roomId) {
+      setError('Room ID is required');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -20,41 +27,43 @@ export function useRoomMembers(roomId: string) {
       
       if (roomMembersResponse.status !== OperationStatus.SUCCESS) {
         setError(roomMembersResponse.message || 'Failed to load room members');
-        setLoading(false);
+        setMembers([]);
         return;
       }
 
       const roomMembers = roomMembersResponse.data || [];
       if (roomMembers.length === 0) {
         setMembers([]);
-        setLoading(false);
         return;
       }
 
-      // Get user details using existing API
-      const userIds = roomMembers.map(rm => rm.user_id);
-      const response = await fetch('/api/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userIds }),
-      });
+      // Get user details using base controller
+      const userIds = roomMembers.map(rm => rm.user_id).filter(Boolean);
+      if (userIds.length === 0) {
+        setMembers([]);
+        return;
+      }
 
-      if (response.ok) {
-        const { users } = await response.json();
-        const membersList: Member[] = Object.entries(users).map(([userId, userData]) => ({
-          id: userId,
-          email: (userData as { email: string; displayName: string }).email,
-          displayName: (userData as { email: string; displayName: string }).displayName,
-          created_at: new Date().toISOString() // Fallback since API doesn't return created_at
-        }));
+      const users = await getUsersByIds(userIds);
+      
+      if (users && typeof users === 'object') {
+        const membersList: Member[] = Object.entries(users)
+          .filter(([userId, userData]) => userId && userData)
+          .map(([userId, userData]) => ({
+            id: userId,
+            email: userData.email || '',
+            displayName: userData.displayName || 'Unknown User',
+            created_at: new Date().toISOString()
+          }));
         setMembers(membersList);
       } else {
         setError('Failed to load member details');
+        setMembers([]);
       }
-    } catch {
-      setError('Error loading members');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setError(`Error loading members: ${errorMessage}`);
+      setMembers([]);
     } finally {
       setLoading(false);
     }

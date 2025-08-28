@@ -25,7 +25,6 @@ export const PREFETCH_ROUTES = {
     MAIN: '/account',
     PERSONAL_INFO: '/account/personal-info',
     RESET_PASSWORD: '/account/reset-password',
-    LOGOUT: '/account/logout',
   },
   
   // Dynamic routes (use functions to generate)

@@ -1,4 +1,5 @@
 import { supabase, supabaseAdmin } from '@/lib/supabase';
+import { getUserDisplayName } from '@/utils/user-display';
 
 
 import { 
@@ -106,7 +107,7 @@ export class MessageController {
         ...message,
         user: {
           email: currentUserEmail || '',
-          displayName: userResponse.data.user_metadata?.displayName || currentUserEmail?.split('@')[0] || 'User'
+          displayName: getUserDisplayName(userResponse.data as any)
         }
       };
 

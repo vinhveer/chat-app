@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/data/auth";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
-import { NavigationSidebar } from "./sidebar";
+import { NavigationSidebarModular as NavigationSidebar } from "./sidebar/navigation-sidebar-modular";
 import { GlobalLoading } from "./global-loading";
 import { PageTransitionProvider } from "./providers/page-transition-provider";
 

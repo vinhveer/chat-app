@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/data/auth';
+import { getUserDisplayName, getUserInitials } from '@/utils/user-display';
 
 export function UserAccount() {
   const { user } = useAuth();
@@ -8,9 +9,9 @@ export function UserAccount() {
   if (!user) return null;
 
   const userInfo = {
-    displayName: user.user_metadata?.displayName || user.email?.split('@')[0] || 'User',
+    displayName: getUserDisplayName(user),
     email: user.email || '',
-    initials: (user.user_metadata?.displayName || user.email)?.charAt(0).toUpperCase() || 'U'
+    initials: getUserInitials(user)
   };
 
   return (

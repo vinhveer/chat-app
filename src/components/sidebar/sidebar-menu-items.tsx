@@ -8,12 +8,13 @@ interface AccountSectionProps {
   onClose?: () => void;
 }
 
-export function AccountSection({ onClose: _onClose }: AccountSectionProps) {
+export function AccountSection({ onClose }: AccountSectionProps) {
   return (
     <SidebarItem
       href="/account"
-      keepSidebarOpen={true} // Account settings should keep sidebar open
+      keepSidebarOpen={false} // Close sidebar when navigating to account
       icon={<SettingsIcon />}
+      onClick={onClose}
     >
       Account Settings
     </SidebarItem>

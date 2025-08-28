@@ -7,9 +7,10 @@ import { OperationStatus } from '@/data/controllers/base/status';
 
 interface AddMemberSectionProps {
   roomId: string;
+  onMemberAdded?: () => void;
 }
 
-export function AddMemberSection({ roomId }: AddMemberSectionProps) {
+export function AddMemberSection({ roomId, onMemberAdded }: AddMemberSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Member[]>([]);
   const [searching, setSearching] = useState(false);
@@ -19,18 +20,32 @@ export function AddMemberSection({ roomId }: AddMemberSectionProps) {
   const handleSearch = async (query: string) => {
     if (query.length < 2) {
       setSearchResults([]);
+      setMessage('');
       return;
     }
 
     setSearching(true);
-    const response = await MemberController.searchMembers({ query });
+    setMessage('');
     
-    if (response.status !== OperationStatus.SUCCESS) {
-      setMessage(response.message || 'Search failed');
-    } else {
-      setSearchResults(response.data || []);
+    try {
+      const response = await MemberController.searchMembers({ query });
+      
+      if (response.status !== OperationStatus.SUCCESS) {
+        setMessage(response.message || 'Search failed');
+        setSearchResults([]);
+      } else {
+        setSearchResults(response.data || []);
+        if ((response.data || []).length === 0) {
+          setMessage('No users found');
+        }
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Search error occurred';
+      setMessage(`Search failed: ${errorMessage}`);
+      setSearchResults([]);
+    } finally {
+      setSearching(false);
     }
-    setSearching(false);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,19 +59,35 @@ export function AddMemberSection({ roomId }: AddMemberSectionProps) {
     setAdding(member.id);
     setMessage('');
 
-    const response = await MemberRoomController.addMemberToRoom({
-      roomId,
-      userId: member.id
-    });
+    try {
+      const response = await MemberRoomController.addMemberToRoom({
+        roomId,
+        userId: member.id
+      });
 
-    if (response.status === OperationStatus.SUCCESS) {
-      setMessage(`Added ${member.displayName} to room`);
-      setSearchQuery('');
-      setSearchResults([]);
-    } else {
-      setMessage(response.message || 'Failed to add member');
+      if (response.status === OperationStatus.SUCCESS) {
+        setMessage(`Added ${member.displayName} to room`);
+        setSearchQuery('');
+        setSearchResults([]);
+        
+        // Refresh member list if callback provided
+        if (onMemberAdded) {
+          onMemberAdded();
+        }
+        
+        // Clear success message after delay
+        setTimeout(() => {
+          setMessage('');
+        }, 3000);
+      } else {
+        setMessage(response.message || 'Failed to add member');
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to add member';
+      setMessage(`Error: ${errorMessage}`);
+    } finally {
+      setAdding(null);
     }
-    setAdding(null);
   };
 
   return (

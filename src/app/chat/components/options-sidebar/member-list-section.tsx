@@ -1,13 +1,22 @@
 'use client';
 
+import React from 'react';
 import { useRoomMembers } from '../../hooks/use-room-members';
 
 interface MemberListSectionProps {
   roomId: string;
+  onRefreshMembers?: (refreshFn: () => void) => void;
 }
 
-export function MemberListSection({ roomId }: MemberListSectionProps) {
-  const { members, loading, error } = useRoomMembers(roomId);
+export function MemberListSection({ roomId, onRefreshMembers }: MemberListSectionProps) {
+  const { members, loading, error, refreshMembers } = useRoomMembers(roomId);
+
+  // Provide refresh function to parent
+  React.useEffect(() => {
+    if (onRefreshMembers && refreshMembers) {
+      onRefreshMembers(refreshMembers);
+    }
+  }, [onRefreshMembers, refreshMembers]);
 
   if (loading) {
     return (

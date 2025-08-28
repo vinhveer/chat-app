@@ -1,3 +1,5 @@
+import { getUserDisplayName } from '@/utils/user-display';
+
 export interface User {
   id: string;
   email?: string;
@@ -26,6 +28,6 @@ export interface UserProfile {
 export const mapAuthUserToProfile = (authUser: User): UserProfile => ({
   id: authUser.id,
   email: authUser.email,
-  displayName: authUser.user_metadata?.displayName || authUser.email?.split('@')[0] || 'User',
+  displayName: getUserDisplayName(authUser as any),
   created_at: authUser.created_at
 });

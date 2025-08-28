@@ -7,4 +7,12 @@ export { ThemeToggle } from './theme/theme-toggle';
 export { UserAccount } from './auth/user-account';
 export { Modal } from './modal';
 export { Dialog } from './dialog';
+export { 
+  NotificationDialog,
+  SuccessDialog,
+  ErrorDialog,
+  WarningDialog,
+  InfoDialog
+} from './notification-dialog';
+export { ConfirmationDialog } from './confirmation-dialog';
 

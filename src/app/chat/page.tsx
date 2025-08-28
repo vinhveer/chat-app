@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/data/auth';
 import { ChatHeader } from './components';
+import { getUserDisplayName } from '@/utils/user-display';
 
 export default function ChatPage() {
   const { user } = useAuth();
@@ -11,7 +12,7 @@ export default function ChatPage() {
     <div className="flex flex-col" style={{ height: '100dvh' }}>
       <ChatHeader 
         title="Chat App"
-        subtitle={`Welcome back, ${user?.user_metadata?.displayName || user?.email?.split('@')[0] || 'User'}`}
+        subtitle={`Welcome back, ${getUserDisplayName(user)}`}
       />
 
       {/* Main Content */}

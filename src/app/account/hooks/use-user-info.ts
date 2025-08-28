@@ -1,10 +1,11 @@
 import { useAuth } from '@/data/auth';
+import { getUserDisplayName } from '@/utils/user-display';
 
 export function useUserInfo() {
   const { user } = useAuth();
 
   const userInfo = {
-    displayName: user?.user_metadata?.displayName || user?.email?.split('@')[0] || 'User',
+    displayName: getUserDisplayName(user),
     email: user?.email || ''
   };
 
